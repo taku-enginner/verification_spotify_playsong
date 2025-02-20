@@ -1,24 +1,70 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from "react";
 import './App.css';
 
 function App() {
+  const [searchArtist, setSearchArtist]  = useState("");
+  const [searchResult, setSearchResult] = useState([{id: 0, name: "default"}]);
+
+  useEffect (() => {
+    console.log(searchArtist);
+  },[searchArtist]);
+
+  const handleInputChange = ( event ) => {
+    setSearchArtist(event.target.value);
+  }
+
+  const handleSearch = async(artist) => {
+    try{
+      const response = await fetch(`http://localhost:3000/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          post: {
+            name: artist
+          }
+        })
+      })
+      const fetch_data = await response.json();
+      console.log("fetch_data", fetch_data);
+      setSearchResult(fetch_data)
+    }catch(error){
+      console.error(error);
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    {/* アーティスト名入力フォーム */}
+      <input 
+        type="text"
+        id="artistName"
+        placeholder="アーティスト名を入力"
+        className="border border-black ext-sm/6 font-medium text-gray-900"
+        onChange={handleInputChange}/>
+      <button
+        type="button"
+        className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+        onClick={() => {
+          if (searchArtist === ""){
+            console.log("検索ボタンがクリックされました")
+            return;
+          }
+          console.log("検索ボタンがクリックされました")
+          handleSearch(searchArtist);
+        }}>
+       保存 
+      </button>
+      <div>
+        <ul>
+          {searchResult.map((result) => (
+            <li key={result.id}>{result.name}</li>
+          )
+          )}
+        </ul>
+      </div>
+    </>
   );
 }
 
