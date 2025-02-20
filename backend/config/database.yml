@@ -23,7 +23,7 @@ default: &default
 development:
   <<: *default
   database: app_development
-  url: <%= Rails.application.credentials.dig(:neon_url) %>
+  url: <%= Rails.application.credentials.dig(:development_neon_url) %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -82,5 +82,4 @@ test:
 production:
   <<: *default
   database: app_production
-  username: app
-  password: <%= ENV["APP_DATABASE_PASSWORD"] %>
+  url: <%= Rails.application.credentials.dig(:production_neon_url) %>

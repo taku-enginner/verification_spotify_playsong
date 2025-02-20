@@ -1,5 +1,14 @@
 FROM ruby:3.2.0
 
+ARG RAILS_ENV
+ARG RAILS_MASTER_KEY
+
+ENV RAILS_ENV=$RAIS_ENV
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+ENV LANG C.UTF-8
+ENV TZ Asia/Tokyo
+RUN env
+
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
 WORKDIR /app
