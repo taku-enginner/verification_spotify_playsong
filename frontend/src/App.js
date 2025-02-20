@@ -4,6 +4,8 @@ import './App.css';
 function App() {
   const [searchArtist, setSearchArtist]  = useState("");
   const [searchResult, setSearchResult] = useState([{id: 0, name: "default"}]);
+  const dev_url = "http://localhost:3000";
+  const prod_url = "https://verificationspotifyplaysong-ti178owv.b4a.run";
 
   useEffect (() => {
     console.log(searchArtist);
@@ -15,7 +17,7 @@ function App() {
 
   const handleSearch = async(artist) => {
     try{
-      const response = await fetch(`http://localhost:3000/posts`, {
+      const response = await fetch(`${prod_url}/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
